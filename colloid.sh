@@ -104,4 +104,4 @@ EOF
 
 gsettings set org.gnome.desktop.interface icon-theme "$THEME_NAME"
 rm -rf "$TMP_DIR"
-success "¡Instalación completada! Ejecuta 'noctalia apply' ahora."
+success "¡Instalación completada! Refresca la Paleta de Colores para ver cambios!"
