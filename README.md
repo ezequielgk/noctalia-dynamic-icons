@@ -20,3 +20,8 @@ bash (curl -fsSL https://raw.githubusercontent.com/ezequielgk/noctalia-dynamic-i
 bash (curl -fsSL https://raw.githubusercontent.com/ezequielgk/noctalia-dynamic-icons/main/flat-remix.sh | psub)
 ```
 
+## Tela-Dark
+
+```bash
+bash (curl -fsSL https://raw.githubusercontent.com/ezequielgk/noctalia-dynamic-icons/main/tela.sh | psub)
+```
