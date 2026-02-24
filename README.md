@@ -3,5 +3,5 @@ dynamic icons for gtk file managers (nemo,thunar,nautilus)
 
 ## INSTALL
 ```bash
-curl -fsSL https://raw.githubusercontent.com/mikuri12/noctalia-dynamic-icons/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ezequielgk/noctalia-dynamic-icons/main/install.sh | bash
 ```
