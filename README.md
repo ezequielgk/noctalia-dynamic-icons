@@ -8,7 +8,7 @@ bash (curl -fsSL https://raw.githubusercontent.com/ezequielgk/noctalia-dynamic-i
 
 ```
 
-## Colloid-Dark
+## Colloid-Dark (Under maintenance)
 
 ```bash
 bash (curl -fsSL https://raw.githubusercontent.com/ezequielgk/noctalia-dynamic-icons/main/colloid.sh | psub)
