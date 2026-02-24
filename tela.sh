@@ -6,7 +6,7 @@ info()    { echo -e "${BLUE}[info]${NC} $1"; }
 success() { echo -e "${GREEN}[ok]${NC} $1"; }
 error()   { echo -e "${RED}[error]${NC} $1"; exit 1; }
 
-THEME_NAME="Noctalia-Tela"
+THEME_NAME="Noctalia-Tela-dark"
 ICONS_DIR="$HOME/.icons"
 NOCTALIA_DIR="$HOME/.config/noctalia"
 TEMPLATES_DIR="$NOCTALIA_DIR/templates"
@@ -30,7 +30,8 @@ read -r -p "Selecciona una opción [1-2]: " OPT < /dev/tty
 
 if [ "$OPT" == "2" ]; then
     info "Limpiando instalación de $THEME_NAME..."
-    rm -rf "$THEME_DIR" "$TEMPLATES_DIR/${THEME_NAME}.sh" "$CACHE_DIR/${THEME_NAME}-apply.sh"
+    rm -rf "$THEME_DIR"
+    rm -rf "$TEMPLATES_DIR/${THEME_NAME}.sh" "$CACHE_DIR/${THEME_NAME}-apply.sh"
     sed -i "/\[templates.${THEME_NAME,,}\]/,+4d" "$NOCTALIA_DIR/user-templates.toml" 2>/dev/null || true
     gsettings set org.gnome.desktop.interface icon-theme "Adwaita"
     success "Limpieza completa."; exit 0
@@ -45,15 +46,12 @@ TDIR=$(find "$TMP_DIR" -maxdepth 1 -type d -name "Tela-icon-theme*")
 
 # --- INSTALACIÓN OFICIAL ---
 info "Ejecutando instalador oficial de Tela..."
-bash "$TDIR/install.sh" -d "$ICONS_DIR" -n "$THEME_NAME"
+rm -rf "$THEME_DIR"
+bash "$TDIR/install.sh" -d "$ICONS_DIR" -n "Noctalia-Tela"
+# El instalador crea: Noctalia-Tela, Noctalia-Tela-dark, Noctalia-Tela-light
+# Usamos Noctalia-Tela-dark directamente, sin mover nada
 
-if [ -d "$ICONS_DIR/${THEME_NAME}-dark" ]; then
-    rm -rf "$THEME_DIR"
-    mv "$ICONS_DIR/${THEME_NAME}-dark" "$THEME_DIR"
-    rm -rf "$ICONS_DIR/${THEME_NAME}-light" "$ICONS_DIR/${THEME_NAME}" 2>/dev/null || true
-else
-    error "El instalador de Tela no creó la carpeta esperada."
-fi
+[ -d "$THEME_DIR" ] || error "El instalador no creó $THEME_NAME"
 
 # --- PREPARACIÓN PARA NOCTALIA ---
 info "Configurando Git interno para los iconos..."
@@ -70,7 +68,7 @@ cat > "$TEMPLATES_DIR/${THEME_NAME}.sh" << 'EOF'
 #!/usr/bin/env bash
 PRI="{{colors.primary.default.hex}}"
 C1="${PRI:1}"
-THEME_NAME="Noctalia-Tela"
+THEME_NAME="Noctalia-Tela-dark"
 T_DIR="$HOME/.icons/$THEME_NAME"
 BRANCH="color-${C1}"
 
