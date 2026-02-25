@@ -10,7 +10,7 @@ Dynamic icons for GTK file managers (Nemo, Thunar, Nautilus, Caja). Estos script
 ![Papirus Preview](img/papirus.png)
 Para instalar el tema Papirus-Dark, ejecuta el siguiente comando:
 ```bash
-bash (curl -fsSL [https://raw.githubusercontent.com/ezequielgk/noctalia-dynamic-icons/main/papirus.sh](https://raw.githubusercontent.com/ezequielgk/noctalia-dynamic-icons/main/papirus.sh) | psub)
+bash (curl -fsSL https://raw.githubusercontent.com/ezequielgk/noctalia-dynamic-icons/main/papirus.sh | psub)
 
 ```
 
@@ -21,7 +21,7 @@ bash (curl -fsSL [https://raw.githubusercontent.com/ezequielgk/noctalia-dynamic-
 *Actualmente bajo mantenimiento. Úselo con precaución.*
 
 ```bash
-bash (curl -fsSL [https://raw.githubusercontent.com/ezequielgk/noctalia-dynamic-icons/main/colloid.sh](https://raw.githubusercontent.com/ezequielgk/noctalia-dynamic-icons/main/colloid.sh) | psub)
+bash (curl -fsSL https://raw.githubusercontent.com/ezequielgk/noctalia-dynamic-icons/main/colloid.sh | psub)
 
 ```
 
@@ -32,7 +32,8 @@ bash (curl -fsSL [https://raw.githubusercontent.com/ezequielgk/noctalia-dynamic-
 Para instalar el tema Flat-Remix-Dark:
 
 ```bash
-bash (curl -fsSL [https://raw.githubusercontent.com/ezequielgk/noctalia-dynamic-icons/main/flat-remix.sh](https://raw.githubusercontent.com/ezequielgk/noctalia-dynamic-icons/main/flat-remix.sh) | psub)
+bash (curl -fsSL https://raw.githubusercontent.com/ezequielgk/noctalia-dynamic-icons/main/flat-remix.sh | psub)
+
 
 ```
 
@@ -43,7 +44,8 @@ bash (curl -fsSL [https://raw.githubusercontent.com/ezequielgk/noctalia-dynamic-
 Para instalar el tema Tela-Dark:
 
 ```bash
-bash (curl -fsSL [https://raw.githubusercontent.com/ezequielgk/noctalia-dynamic-icons/main/tela.sh](https://raw.githubusercontent.com/ezequielgk/noctalia-dynamic-icons/main/tela.sh) | psub)
+bash (curl -fsSL https://raw.githubusercontent.com/ezequielgk/noctalia-dynamic-icons/main/tela.sh | psub)
+
 
 ```
 
