@@ -16,7 +16,7 @@ bash (curl -fsSL [https://raw.githubusercontent.com/ezequielgk/noctalia-dynamic-
 
 ---
 
-### Colloid-Dark (⚠️ Under maintenance)
+### Colloid-Dark 
 ![Colloid Preview](img/colloid-dark.png)
 *Actualmente bajo mantenimiento. Úselo con precaución.*
 
@@ -38,9 +38,8 @@ bash (curl -fsSL [https://raw.githubusercontent.com/ezequielgk/noctalia-dynamic-
 
 ---
 
-### Tela-Dark
+### Tela-Dark (⚠️ Under maintenance)
 
-*(Imagen no disponible en el directorio /img)*
 Para instalar el tema Tela-Dark:
 
 ```bash
