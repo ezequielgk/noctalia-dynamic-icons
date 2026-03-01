@@ -32,7 +32,7 @@ echo "                                                                "
 echo -e "${NC}"
 
 echo -e "${BLUE}=== GESTOR: $THEME_NAME (Ruta: .icons) ===${NC}"
-echo "1) Instalar / Reparar"
+echo "1) Instalar"
 echo "2) LIMPIEZA TOTAL (Desinstalar)"
 read -r -p "Selecciona una opción [1-2]: " OPT
 
