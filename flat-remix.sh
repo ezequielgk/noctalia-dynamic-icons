@@ -7,107 +7,105 @@ info()    { echo -e "${BLUE}[info]${NC} $1"; }
 success() { echo -e "${GREEN}[ok]${NC} $1"; }
 error()   { echo -e "${RED}[error]${NC} $1"; exit 1; }
 
-# Rutas
-ICONS_DIR="$HOME/.icons"
+# Rutas de trabajo (Local Share Icons)
+THEME_NAME="Noctalia-Colloid"
+REAL_FOLDER="Noctalia-Colloid-Dark"
+ICONS_DIR="$HOME/.local/share/icons"
 NOCTALIA_DIR="$HOME/.config/noctalia"
 TEMPLATES_DIR="$NOCTALIA_DIR/templates"
 CACHE_DIR="$HOME/.cache/noctalia"
-THEME_NAME="Noctalia-Folders"
-THEME_DIR="$ICONS_DIR/$THEME_NAME"
-TMP_DIR="/tmp/icon-install-flat-remix"
+THEME_DIR="$ICONS_DIR/$REAL_FOLDER"
+TMP_DIR="/tmp/icon-install-colloid"
+
+mkdir -p "$ICONS_DIR"
+mkdir -p "$TEMPLATES_DIR"
 
 clear
+# Nuevo Arte ASCII solicitado
 echo -e "${BLUE}"
-echo "    ____                                ________      __    ____                 _     "
-echo "   / __ \__  ______  ____ _____ ___  (_)____            / ____/ /___ _/ /_  / __ \___  ____ ___  (_)  __"
-echo "  / / / / / / / __ \/ __ \`/ __ \`__ \/ / ___/  ______   / /_   / / __ \`/ __/ / /_/ / _ \/ __ \`__ \/ / |/_/ "
-echo " / /_/ / /_/ / / / / /_/ / / / / / / / /__   /_____/  / __/  / / /_/ / /__ / _, _/  __/ / / / / / />  <  "
-echo "/_____/\__, /_/ /_/\__,_/_/ /_/ /_/_/\___/           /_/    /_/\__,_/\__(_)_/ |_|\___/_/ /_/ /_/_/_/|_|  "
-echo "      /____/                                                                                             "
+echo "    _  __            __        ___              ________      __ "
+echo "   / | / /___  _____/ /_____ _/ (_)___ _       / ____/ /___ _/ /_"
+echo "  /  |/ / __ \/ ___/ __/ __ \`/ / / __ \`/_____/ /_  / / __ \`/ __/"
+echo " / /|  / /_/ / /__/ /_/ /_/ / / / /_/ /_____/ __/ / / /_/ / /_  "
+echo "/_/ |_/\____/\___/\__/\__,_/_/_/\__,_/     /_/   /_/\__,_/\__/  "
+echo "                                                                "
 echo -e "${NC}"
 
-echo -e "${BLUE}=== INSTALADOR EXCLUSIVO: FLAT REMIX DINÁMICO ===${NC}"
-echo "1) Instalar Flat-Remix-Dark"
-echo "2) LIMPIEZA TOTAL"
+echo -e "${BLUE}=== GESTOR: $THEME_NAME (LOCAL MODE) ===${NC}"
+echo "1) Instalar / Reparar en ~/.local/share/icons"
+echo "2) LIMPIEZA TOTAL (Desinstalar)"
 read -r -p "Selecciona una opción [1-2]: " OPT
 
 if [ "$OPT" == "2" ]; then
-    info "Eliminando rastro de configuraciones previas..."
-    rm -rf "$THEME_DIR" "$TEMPLATES_DIR/folder-apply.sh" "$CACHE_DIR/folder-apply-gen.sh"
-    sed -i '/\[templates.folder-apply\]/,+4d' "$NOCTALIA_DIR/user-templates.toml" 2>/dev/null || true
+    info "Eliminando rastro de configuraciones..."
+    rm -rf "$THEME_DIR" "$TEMPLATES_DIR/${THEME_NAME}.sh"
+    sed -i "/\[templates.${THEME_NAME,,}\]/,+4d" "$NOCTALIA_DIR/user-templates.toml" 2>/dev/null || true
     success "Sistema limpio."; exit 0
 fi
 
-# --- CONFIGURACIÓN ESPECÍFICA ---
-B_NAME="Flat Remix"
-URL="https://github.com/daniruiz/flat-remix/archive/refs/heads/master.zip"
-MATCH="Flat-Remix-Blue-Dark"
-
 # --- DESCARGA ---
-info "Descargando base $B_NAME..."
+info "Descargando base Colloid..."
 rm -rf "$TMP_DIR" && mkdir -p "$TMP_DIR"
-curl -fsSL "$URL" -o "$TMP_DIR/theme.zip"
-unzip -q "$TMP_DIR/theme.zip" -d "$TMP_DIR"
-SRC=$(find "$TMP_DIR" -maxdepth 3 -name "$MATCH" -type d | head -1)
+curl -fsSL "https://github.com/vinceliuice/Colloid-icon-theme/archive/refs/heads/main.zip" -o "$TMP_DIR/colloid.zip"
+unzip -q "$TMP_DIR/colloid.zip" -d "$TMP_DIR"
+CDIR=$(find "$TMP_DIR" -maxdepth 1 -type d -name "Colloid-icon-theme*")
 
-# --- COPIA INTELIGENTE ---
-info "Copiando iconos y estructuras (Solo places)..."
-rm -rf "$THEME_DIR" && mkdir -p "$THEME_DIR"
-find "$SRC" -type d -name "places" | while read -r p; do
-    rel="${p#$SRC/}"; mkdir -p "$THEME_DIR/$rel"
-    cp -a "$p/." "$THEME_DIR/$rel/"
-done
-cp "$SRC/index.theme" "$THEME_DIR/"
-sed -i "s/^Name=.*/Name=$THEME_NAME/" "$THEME_DIR/index.theme"
-sed -i "s/^Inherits=.*/Inherits=$MATCH,hicolor/" "$THEME_DIR/index.theme"
+# --- INSTALACIÓN OFICIAL ---
+info "Ejecutando instalador en ruta local..."
+bash "$CDIR/install.sh" -d "$ICONS_DIR" -n "$THEME_NAME" -t default -s default
 
-# --- SNAPSHOT GIT ---
-info "Creando snapshot original para Noctalia..."
-git -C "$THEME_DIR" init -q
-git -C "$THEME_DIR" add .
-git -C "$THEME_DIR" commit -q -m "original"
-git -C "$THEME_DIR" tag "original"
+# --- SNAPSHOT GIT (Obligatorio para el cambio de color) ---
+info "Creando snapshot original..."
+cd "$THEME_DIR"
+rm -rf .git
+git init -q
+git add .
+git commit -q -m "original"
+git tag "original"
 
-# --- SCRIPT APLICADOR DE COLOR ---
+# --- SCRIPT APLICADOR DE COLOR (Template) ---
 info "Creando template para Noctalia..."
-mkdir -p "$TEMPLATES_DIR"
-cat > "$TEMPLATES_DIR/folder-apply.sh" << 'EOF'
+cat > "$TEMPLATES_DIR/${THEME_NAME}.sh" << 'EOF'
 #!/usr/bin/env bash
 PRI="{{colors.primary.default.hex}}"
 C1="${PRI:1}"
-T_DIR="$HOME/.icons/Noctalia-Folders"
-BRANCH="color-${C1}"
+T_DIR="$HOME/.local/share/icons/Noctalia-Colloid-Dark"
 
-git -C "$T_DIR" checkout -q original -- .
-git -C "$T_DIR" checkout -b "$BRANCH" 2>/dev/null || git -C "$T_DIR" checkout -q "$BRANCH"
+# Restaurar iconos originales antes de aplicar nuevo color
+git -C "$T_DIR" reset --hard -q original
+git -C "$T_DIR" clean -fd -q
 
-# MOTOR DE COLOR ULTRA-AGRESIVO
+# Motor de color ultra-agresivo (Mezcla de Colloid + Flat Remix)
 find "$T_DIR" -name "*.svg" -type f -print0 | xargs -0 sed -i -E \
+    -e "s/#60c0f0/#${C1}/gI" \
+    -e "s/#5294e2/#${C1}/gI" \
     -e "s/fill:#[0-9a-fA-F]{6}/fill:#${C1}/gI" \
     -e "s/fill=\"#[0-9a-fA-F]{6}\"/fill=\"#${C1}\"/gI" \
     -e "s/stop-color:#[0-9a-fA-F]{6}/stop-color:#${C1}/gI" \
     -e "s/stop-color=\"#[0-9a-fA-F]{6}\"/stop-color=\"#${C1}\"/gI" \
-    -e "s/style=\"fill:#[0-9a-fA-F]{6}/style=\"fill:#${C1}/gI"
+    -e "s/style=\"fill:#[0-9a-fA-F]{6}/style=\"fill:#${C1}/gI" \
+    -e "s/currentColor/#${C1}/gI"
 
 gtk-update-icon-cache -f -t "$T_DIR" 2>/dev/null
 gsettings set org.gnome.desktop.interface icon-theme "hicolor"
-sleep 0.5
-gsettings set org.gnome.desktop.interface icon-theme "Noctalia-Folders"
+sleep 0.3
+gsettings set org.gnome.desktop.interface icon-theme "Noctalia-Colloid-Dark"
 EOF
 
 # --- VINCULACIÓN CON NOCTALIA ---
 info "Actualizando user-templates.toml..."
-sed -i '/\[templates.folder-apply\]/,+4d' "$NOCTALIA_DIR/user-templates.toml" 2>/dev/null || true
+sed -i "/\[templates.${THEME_NAME,,}\]/,+4d" "$NOCTALIA_DIR/user-templates.toml" 2>/dev/null || true
 cat >> "$NOCTALIA_DIR/user-templates.toml" << EOF
 
-[templates.folder-apply]
-input_path  = "~/.config/noctalia/templates/folder-apply.sh"
-output_path = "~/.cache/noctalia/folder-apply-gen.sh"
-post_hook   = "bash ~/.cache/noctalia/folder-apply-gen.sh"
+[templates.${THEME_NAME,,}]
+input_path  = "~/.config/noctalia/templates/${THEME_NAME}.sh"
+output_path = "~/.cache/noctalia/${THEME_NAME}-apply.sh"
+post_hook   = "bash ~/.cache/noctalia/${THEME_NAME}-apply.sh"
 EOF
 
-gsettings set org.gnome.desktop.interface icon-theme "$THEME_NAME"
+chmod +x "$TEMPLATES_DIR/${THEME_NAME}.sh"
+gsettings set org.gnome.desktop.interface icon-theme "$REAL_FOLDER"
 rm -rf "$TMP_DIR"
 
-success "¡Instalación de Flat Remix completada!"
-info "¡Instalación completada! Refresca la Paleta de Colores para ver cambios!"
+success "¡Instalación finalizada!"
+info "Ya puedes aplicar tus colores desde Noctalia."
